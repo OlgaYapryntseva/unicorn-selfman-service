@@ -25,7 +25,7 @@ public class AuthorizationConfiguration {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.authorizeHttpRequests(authorize -> authorize
 				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
-				.requestMatchers("/provider/register")
+				.requestMatchers("/provider/register", "/business", "/business/**")
 					.permitAll()
 				.requestMatchers(HttpMethod.PUT, "/provider/login/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
