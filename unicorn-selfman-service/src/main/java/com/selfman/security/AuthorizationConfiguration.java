@@ -29,15 +29,15 @@ public class AuthorizationConfiguration {
 					.permitAll()
 				.requestMatchers("/customer/user/{email}/role/{role}")
 					.hasRole("ADMINISTRATOR")
-				.requestMatchers(HttpMethod.PUT, "/customer/login/{email}")
+				.requestMatchers(HttpMethod.PUT, "/customer/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
 				.requestMatchers(HttpMethod.DELETE, "/customer/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
 					
-				.requestMatchers(HttpMethod.PUT, "/provider/login/{email}")
+				.requestMatchers(HttpMethod.PUT, "/provider/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
 				.requestMatchers(HttpMethod.DELETE, "/provider/{email}")
-					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
+					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
 					
 				.anyRequest()
 					.authenticated()

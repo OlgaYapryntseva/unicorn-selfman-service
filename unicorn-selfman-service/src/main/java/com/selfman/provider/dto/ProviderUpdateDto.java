@@ -9,27 +9,16 @@ import lombok.Getter;
 
 @Getter
 public class ProviderUpdateDto {
-	
-	String logo;
-	
-    String name;
-	
-	Set<String> languages;
-	
-	Set<String> industry;
-	
-	Set<String> keywords;
-	
-	Set<String> products;
-	
-	Integer founded;
-	
-	Double rating;
-	
-	Integer reviews;
-	
-    Set<ContactInfo> contactInfo;
-	
+	String logo;	
+    String name;	
+	Set<String> languages;	
+	Set<String> industry;	
+	Set<String> keywords;	
+	Set<String> products;	
+	Integer founded;	
+	Double rating;	
+	Integer reviews;	
+    Set<ContactInfo> contactInfo;	
 	Set<SocialMedia> socialMedia;
-
+	
 }

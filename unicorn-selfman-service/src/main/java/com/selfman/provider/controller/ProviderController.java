@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import com.selfman.provider.dto.ProviderChangePasswordDto;
+
 import com.selfman.provider.dto.ProviderCreateDto;
 import com.selfman.provider.dto.ProviderDto;
 import com.selfman.provider.dto.ProviderRegisterDto;
 import com.selfman.provider.dto.ProviderRemoveDto;
 import com.selfman.provider.dto.ProviderUpdateDto;
 import com.selfman.provider.service.ProviderService;
+
 import lombok.RequiredArgsConstructor;
-
-
 
 @RestController
 @RequiredArgsConstructor
@@ -34,8 +34,8 @@ public class ProviderController{
 	}
 	
 	@PostMapping("/provider/login")
-	public boolean login(Principal principal) {
-		return getProvider(principal.getName()) != null;
+	public ProviderDto login(Principal principal) {
+		return getProvider(principal.getName());
 	}
 
 	@PutMapping("/provider/{email}")
@@ -50,10 +50,8 @@ public class ProviderController{
 
 	@PutMapping("/provider/password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ProviderChangePasswordDto changePasswordProvider(Principal principal, @RequestBody ProviderChangePasswordDto providerChangePasswordDto) {
-		System.out.println(principal.getName());
-		
-		return providerService.changePasswordProvider(principal.getName(), providerChangePasswordDto.getNewPassword());
+	public void changePasswordProvider(Principal principal, @RequestHeader("X-Password") String newPassword) {
+		providerService.changePasswordProvider(principal.getName(), newPassword);
 	}
 
 	@GetMapping("/provider/name/{email}")

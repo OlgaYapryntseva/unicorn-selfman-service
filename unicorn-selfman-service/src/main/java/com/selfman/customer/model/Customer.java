@@ -11,12 +11,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collection = "customers_test")
+@Document(collection = "customers")
 public class Customer {
+	@Id
+    String email;
 	String firstName;
     String lastName;
-    @Id
-    String email;
     String password;
     String country;
     String city;

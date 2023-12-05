@@ -18,6 +18,7 @@ import com.selfman.customer.dto.CustomerDto;
 import com.selfman.customer.dto.CustomerExtendedDto;
 import com.selfman.customer.dto.CustomerRegisterDto;
 import com.selfman.customer.dto.CustomerRemoveDto;
+import com.selfman.customer.dto.CustomerUpdateDto;
 import com.selfman.customer.dto.RolesCustomerDto;
 import com.selfman.customer.service.CustomerService;
 
@@ -45,8 +46,8 @@ public class CustomerController {
 	}
 
 	@PutMapping("/user/{email}")
-	public CustomerExtendedDto updateCustomer(@PathVariable String email, @RequestBody CustomerExtendedDto customerExtendedDto) {
-		return customerService.updateCustomer(email, customerExtendedDto);
+	public CustomerExtendedDto updateCustomer(@PathVariable String email, @RequestBody CustomerUpdateDto customerUpdateDto) {
+		return customerService.updateCustomer(email, customerUpdateDto);
 	}
 
 	@PutMapping("/user/{email}/role/{role}")

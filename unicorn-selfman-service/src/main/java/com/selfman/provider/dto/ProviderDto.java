@@ -1,48 +1,30 @@
 package com.selfman.provider.dto;
 
 import java.util.Set;
-import org.springframework.data.annotation.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ProviderDto {
-	@Id
 	String email;
-	
     String name;
-	
 	String password;
-	
-
 	String country;
-	
 	String logo;
-	
 	Set<String> languages;
-	
 	Set<String> industry;
-	
 	Set<String> keywords;
-	
-	Set<String> products;
-	
-	Integer founded;
-	
-	Double rating;
-	
-	Integer reviews;
-	
-	ContactInfoDto contactInfo;
-	
+	Set<String> products;	
+	Integer founded;	
+	Double rating;	
+	Integer reviews;	
+	ContactInfoDto contactInfo;	
 	SocialMediaDto socialMedia;
-
+	
 }

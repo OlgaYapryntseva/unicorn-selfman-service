@@ -1,6 +1,5 @@
 package com.selfman.provider.service;
 
-import com.selfman.provider.dto.ProviderChangePasswordDto;
 import com.selfman.provider.dto.ProviderCreateDto;
 import com.selfman.provider.dto.ProviderDto;
 import com.selfman.provider.dto.ProviderRegisterDto;
@@ -14,7 +13,7 @@ public interface ProviderService {
    
    ProviderRemoveDto removeProvider(String email);
    
-   ProviderChangePasswordDto changePasswordProvider(String email, String newPassword);
+   void changePasswordProvider(String email, String newPassword);
    
    ProviderDto getProvider(String email);
    

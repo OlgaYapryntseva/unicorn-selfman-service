@@ -10,6 +10,7 @@ import com.selfman.customer.dto.CustomerDto;
 import com.selfman.customer.dto.CustomerExtendedDto;
 import com.selfman.customer.dto.CustomerRegisterDto;
 import com.selfman.customer.dto.CustomerRemoveDto;
+import com.selfman.customer.dto.CustomerUpdateDto;
 import com.selfman.customer.dto.RolesCustomerDto;
 import com.selfman.customer.dto.exceptions.CustomerExistsExeption;
 import com.selfman.customer.dto.exceptions.CustomerNotFoundException;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
-	
+
 	final CustomerRepository customerRepository;
 	final ModelMapper modelMapper;
 	final PasswordEncoder passwordEncoder;
@@ -52,37 +53,39 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 	}
 
 	@Override
-	public CustomerExtendedDto updateCustomer(String email, CustomerExtendedDto customerExtendedDto) {
+	public CustomerExtendedDto updateCustomer(String email, CustomerUpdateDto customerExtendedDto) {
 		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
 		customer.setFirstName(customerExtendedDto.getFirstName());
 		customer.setLastName(customerExtendedDto.getLastName());
-		customer.setEmail(customerExtendedDto.getEmail());
 		customer.setCountry(customerExtendedDto.getCountry());
 		customer.setCity(customerExtendedDto.getCity());
 		customer.setStreet(customerExtendedDto.getStreet());
 		customer.setBuilding(customerExtendedDto.getBuilding());
 		customer.setZipcode(customerExtendedDto.getZipcode());
 		customer.setPhoneNumber(customerExtendedDto.getPhoneNumber());
-		customer.addRole("VERIFIED");
+		if (customer.getCity() != null && customer.getStreet() != null && customer.getBuilding() != null
+				&& customer.getPhoneNumber() != null) {
+			customer.addRole("VERIFIED");
+		}
 		customerRepository.save(customer);
 		return modelMapper.map(customer, CustomerExtendedDto.class);
 	}
 
 	@Override
 	public RolesCustomerDto changeRolesListCustomer(String email, String role, boolean isAddRole) {
-		
+
 		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
-			boolean res;
-			if (isAddRole) {
-				res = customer.addRole(role.toUpperCase());
-			} else {
-				res = customer.removeRole(role.toUpperCase());
-			}
-			if(res) {
-				customerRepository.save(customer);
-			}
-			return modelMapper.map(customer, RolesCustomerDto.class);
-			
+		boolean res;
+		if (isAddRole) {
+			res = customer.addRole(role.toUpperCase());
+		} else {
+			res = customer.removeRole(role.toUpperCase());
+		}
+		if (res) {
+			customerRepository.save(customer);
+		}
+		return modelMapper.map(customer, RolesCustomerDto.class);
+
 	}
 
 	@Override
@@ -91,9 +94,8 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 		String password = passwordEncoder.encode(newPassword);
 		customer.setPassword(password);
 		customerRepository.save(customer);
-
 	}
-	
+
 	@Override
 	public void run(String... args) throws Exception {
 		if (customerRepository.findById("admin").isEmpty()) {
@@ -102,7 +104,6 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 			customer.addRole("ADMINISTRATOR");
 			customerRepository.save(customer);
 		}
-		
 	}
 
 }
