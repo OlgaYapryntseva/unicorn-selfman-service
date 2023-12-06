@@ -9,7 +9,7 @@ import com.selfman.provider.dto.ProviderUpdateDto;
 public interface ProviderService {
    ProviderCreateDto createProvider(ProviderRegisterDto providerRegisterDto);
    
-   ProviderUpdateDto updateProvider(String email, ProviderUpdateDto providerDto);
+   ProviderDto updateProvider(String email, ProviderUpdateDto providerUpdateDto);
    
    ProviderRemoveDto removeProvider(String email);
    

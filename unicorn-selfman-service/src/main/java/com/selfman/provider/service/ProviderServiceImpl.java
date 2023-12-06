@@ -39,21 +39,23 @@ public class ProviderServiceImpl implements ProviderService, CommandLineRunner {
 	}
 
 	@Override
-	public ProviderUpdateDto updateProvider(String email, ProviderUpdateDto providerUpdateDto) {
+	public ProviderDto updateProvider(String email, ProviderUpdateDto providerUpdateDto) {
 		Provider provider = providerRepository.findById(email).orElseThrow(ProviderNotFoundException::new);
 		provider.setLogo(provider.getLogo());
 		provider.setName(providerUpdateDto.getName());
+		provider.setLanguages(providerUpdateDto.getLanguages());
 		provider.setIndustry(providerUpdateDto.getIndustry());
 		provider.setKeywords(providerUpdateDto.getKeywords());
 		provider.setProducts(providerUpdateDto.getProducts());
+		provider.setFounded(providerUpdateDto.getFounded());
 		provider.setContactInfo(provider.getContactInfo());
 		provider.setSocialMedia(provider.getSocialMedia());
-		if (provider.getCountry() != null && provider.getName() != null && provider.getIndustry() != null
+		if (provider.getName() != null && provider.getIndustry() != null
 				&& provider.getProducts() != null) {
 			provider.addRole("VERIFIED");
 		}
 		providerRepository.save(provider);
-		return modelMapper.map(provider, ProviderUpdateDto.class);
+		return modelMapper.map(provider, ProviderDto.class);
 	}
 
 	@Override

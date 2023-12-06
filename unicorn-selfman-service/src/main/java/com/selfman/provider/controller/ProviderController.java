@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,38 +24,39 @@ import com.selfman.provider.service.ProviderService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/provider/")
 @RequiredArgsConstructor
 public class ProviderController{
 	
 	final ProviderService providerService;
 
-	@PostMapping("/provider/register")
+	@PostMapping("/register")
 	public ProviderCreateDto createProvider(@RequestBody ProviderRegisterDto providerRegisterDto) {
 		return providerService.createProvider(providerRegisterDto);
 	}
 	
-	@PostMapping("/provider/login")
+	@PostMapping("/login")
 	public ProviderDto login(Principal principal) {
 		return getProvider(principal.getName());
 	}
 
-	@PutMapping("/provider/{email}")
-	public ProviderUpdateDto updateProvider(Principal principal, @RequestBody ProviderUpdateDto providerUpdateDto) {
-		return providerService.updateProvider(principal.getName(), providerUpdateDto);
+	@PutMapping("/user/{email}")
+	public ProviderDto updateProvider(@PathVariable String email, @RequestBody ProviderUpdateDto providerUpdateDto) {
+		return providerService.updateProvider(email, providerUpdateDto);
 	}
 
-	@DeleteMapping("/provider/{email}")
+	@DeleteMapping("/user/{email}")
 	public ProviderRemoveDto removeProvider(@PathVariable String email) {
 		return providerService.removeProvider(email);
 	}
 
-	@PutMapping("/provider/password")
+	@PutMapping("/password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void changePasswordProvider(Principal principal, @RequestHeader("X-Password") String newPassword) {
 		providerService.changePasswordProvider(principal.getName(), newPassword);
 	}
 
-	@GetMapping("/provider/name/{email}")
+	@GetMapping("/user/{email}")
 	public ProviderDto getProvider(@PathVariable String email) {
 		return providerService.getProvider(email);
 	}

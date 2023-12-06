@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public class ProviderUpdateDto {
 	String logo;	
-    String name;	
+    String name;
 	Set<String> languages;	
 	Set<String> industry;	
 	Set<String> keywords;	

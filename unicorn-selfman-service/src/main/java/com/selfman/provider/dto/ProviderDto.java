@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class ProviderDto {
 	String email;
     String name;
-	String password;
 	String country;
 	String logo;
 	Set<String> languages;

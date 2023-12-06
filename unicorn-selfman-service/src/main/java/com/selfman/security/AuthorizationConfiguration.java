@@ -27,16 +27,17 @@ public class AuthorizationConfiguration {
         		dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
 				.requestMatchers("/customer/register", "/provider/register")
 					.permitAll()
+					
 				.requestMatchers("/customer/user/{email}/role/{role}")
 					.hasRole("ADMINISTRATOR")
 				.requestMatchers(HttpMethod.PUT, "/customer/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
 				.requestMatchers(HttpMethod.DELETE, "/customer/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
-					
-				.requestMatchers(HttpMethod.PUT, "/provider/{email}")
+	
+				.requestMatchers(HttpMethod.PUT, "/provider/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
-				.requestMatchers(HttpMethod.DELETE, "/provider/{email}")
+				.requestMatchers(HttpMethod.DELETE, "/provider/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
 					
 				.anyRequest()
@@ -44,4 +45,6 @@ public class AuthorizationConfiguration {
 		);
 		return http.build();
 	}
+	
+	
 }
