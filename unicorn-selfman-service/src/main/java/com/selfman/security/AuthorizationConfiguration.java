@@ -25,7 +25,7 @@ public class AuthorizationConfiguration {
         http.authorizeHttpRequests(authorize -> authorize.
 //        		dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
         		dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-				.requestMatchers("/customer/register", "/provider/register")
+				.requestMatchers("/customer/register", "/provider/register", "/business/**")
 					.permitAll()
 					
 				.requestMatchers("/customer/user/{email}/role/{role}")
