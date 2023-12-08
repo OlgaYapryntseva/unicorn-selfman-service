@@ -51,7 +51,6 @@ public class BusinessRequestsServiceImpl implements BusinessRequestsService{
 
 	@Override
 	public BusinessRequestsDto getByIdBusinessRequests(String id) {
-		System.out.println("getByIdBusinessRequests = " + id);
 		BusinessRequests businessRequests = businessRequestsRepository.findById(id).orElseThrow(BusinessRequestsNotFoundException::new);
 		return modelMapper.map(businessRequests, BusinessRequestsDto.class);
 	}

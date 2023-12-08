@@ -31,6 +31,12 @@ public class Provider {
 	Set<String> roles;
 
 	public Provider() {
+		languages = new HashSet<String>();
+		industry = new HashSet<String>();
+		keywords = new HashSet<String>();
+		products = new HashSet<String>();
+		socialMedia = new HashSet<SocialMedia>();
+		contactInfo = new HashSet<ContactInfo>();
 		roles = new HashSet<String>();
 		rating = 0.0;
 		reviews = 0;

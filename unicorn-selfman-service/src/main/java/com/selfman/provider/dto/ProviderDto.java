@@ -23,7 +23,7 @@ public class ProviderDto {
 	Integer founded;	
 	Double rating;	
 	Integer reviews;	
-	ContactInfoDto contactInfo;	
-	SocialMediaDto socialMedia;
+	Set<ContactInfoDto> contactInfo;	
+	Set<SocialMediaDto> socialMedia;
 	
 }

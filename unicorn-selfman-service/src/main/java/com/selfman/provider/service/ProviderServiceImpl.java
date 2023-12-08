@@ -1,19 +1,25 @@
 package com.selfman.provider.service;
 
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.selfman.provider.dao.ProviderRepository;
+import com.selfman.provider.dto.ContactInfoDto;
 import com.selfman.provider.dto.ProviderCreateDto;
 import com.selfman.provider.dto.ProviderDto;
 import com.selfman.provider.dto.ProviderRegisterDto;
 import com.selfman.provider.dto.ProviderRemoveDto;
 import com.selfman.provider.dto.ProviderUpdateDto;
+import com.selfman.provider.dto.SocialMediaDto;
 import com.selfman.provider.exceptions.ProviderExistsExeption;
 import com.selfman.provider.exceptions.ProviderNotFoundException;
+import com.selfman.provider.model.ContactInfo;
 import com.selfman.provider.model.Provider;
+import com.selfman.provider.model.SocialMedia;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,8 +54,17 @@ public class ProviderServiceImpl implements ProviderService, CommandLineRunner {
 		provider.setKeywords(providerUpdateDto.getKeywords());
 		provider.setProducts(providerUpdateDto.getProducts());
 		provider.setFounded(providerUpdateDto.getFounded());
-		provider.setContactInfo(provider.getContactInfo());
-		provider.setSocialMedia(provider.getSocialMedia());
+		
+		
+		Set<SocialMediaDto> mediaDto = providerUpdateDto.getSocialMedia();
+		if (mediaDto != null) {
+			mediaDto.forEach(m -> provider.addSocialMedia(modelMapper.map(m, SocialMedia.class)));		
+		}
+		Set<ContactInfoDto> contactDto = providerUpdateDto.getContactInfo();
+		if (contactDto != null) {
+			contactDto.forEach(m -> provider.addContactInfo(modelMapper.map(m, ContactInfo.class)));		
+		}
+		
 		if (provider.getName() != null && provider.getIndustry() != null
 				&& provider.getProducts() != null) {
 			provider.addRole("VERIFIED");

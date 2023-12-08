@@ -2,9 +2,6 @@ package com.selfman.provider.dto;
 
 import java.util.Set;
 
-import com.selfman.provider.model.ContactInfo;
-import com.selfman.provider.model.SocialMedia;
-
 import lombok.Getter;
 
 @Getter
@@ -18,7 +15,7 @@ public class ProviderUpdateDto {
 	Integer founded;	
 	Double rating;	
 	Integer reviews;	
-    Set<ContactInfo> contactInfo;	
-	Set<SocialMedia> socialMedia;
+    Set<ContactInfoDto> contactInfo;	
+	Set<SocialMediaDto> socialMedia;
 	
 }

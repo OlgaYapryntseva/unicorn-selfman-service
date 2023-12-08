@@ -23,7 +23,6 @@ public class BusinessRequestsController{
 	
 	@PostMapping("/business")
 	public BusinessRequestsDto createBusinessRequests(@RequestBody BusinessRequestsCreateDto businessRequestsCreateDto) {
-		System.out.println("createBusinessRequests");
 		return businessRequestsService.createBusinessRequests(businessRequestsCreateDto);
 	}
 
