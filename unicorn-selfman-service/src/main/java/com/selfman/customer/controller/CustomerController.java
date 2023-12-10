@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.selfman.customer.dto.CustomerChangePasswordDto;
 import com.selfman.customer.dto.CustomerDto;
 import com.selfman.customer.dto.CustomerExtendedDto;
 import com.selfman.customer.dto.CustomerRegisterDto;
@@ -62,9 +62,12 @@ public class CustomerController {
 	
 	@PutMapping("/password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void changePasswordCustomer(Principal principal, @RequestHeader("X-Password") String newPassword) {
-		customerService.changePasswordCustomer(principal.getName(), newPassword);
+	public void changePasswordCustomer(@RequestBody CustomerChangePasswordDto customerChangePasswordDto) {
+		customerService.changePasswordCustomer(customerChangePasswordDto);
 	}
+//	public void changePasswordCustomer(Principal principal, @RequestHeader("X-Password") String newPassword) {
+//		customerService.changePasswordCustomer(principal.getName(), newPassword);
+//	}
 	
 	@GetMapping("/user/{email}")
 	public CustomerExtendedDto getCustomer(@PathVariable String email) {

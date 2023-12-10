@@ -3,8 +3,6 @@ package com.selfman.business.requests.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.selfman.customer.dto.CustomerDto;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +14,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BusinessRequestsDto {
 	String id;
+	String providerEmail;
+	String customerEmail;
 	String productDescription;
-	List<String> files;
 	String status;
-	CustomerDto customer;
-	ProviderDto provider;
+	List<String> files;
 	LocalDateTime dateTime;
 	
 }

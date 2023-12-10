@@ -1,5 +1,6 @@
 package com.selfman.customer.service;
 
+import com.selfman.customer.dto.CustomerChangePasswordDto;
 import com.selfman.customer.dto.CustomerDto;
 import com.selfman.customer.dto.CustomerExtendedDto;
 import com.selfman.customer.dto.CustomerRegisterDto;
@@ -18,6 +19,6 @@ public interface CustomerService {
 	
 	RolesCustomerDto changeRolesListCustomer(String email, String role, boolean isAddRole);
 
-	void changePasswordCustomer(String email, String newPassword);
+	void changePasswordCustomer(CustomerChangePasswordDto customerChangePasswordDto);
 
 }

@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.selfman.customer.dao.CustomerRepository;
+import com.selfman.customer.dto.CustomerChangePasswordDto;
 import com.selfman.customer.dto.CustomerDto;
 import com.selfman.customer.dto.CustomerExtendedDto;
 import com.selfman.customer.dto.CustomerRegisterDto;
@@ -28,11 +29,10 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 
 	@Override
 	public CustomerDto registerCustomer(CustomerRegisterDto customerRegisterDto) {
-		if (customerRepository.existsById(customerRegisterDto.getEmail())) {
+		if (customerRepository.existsByEmail(customerRegisterDto.getEmail())) {
 			throw new CustomerExistsExeption("Customer with email: " + customerRegisterDto.getEmail() + " exist");
 		}
 		Customer customer = modelMapper.map(customerRegisterDto, Customer.class);
-		customer.addRole("CUSTOMER");
 		String password = passwordEncoder.encode(customerRegisterDto.getPassword());
 		customer.setPassword(password);
 		customerRepository.save(customer);
@@ -41,32 +41,28 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 
 	@Override
 	public CustomerExtendedDto getCustomer(String email) {
-		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
+		Customer customer = customerRepository.findByEmail(email).orElseThrow(CustomerNotFoundException::new);
 		return modelMapper.map(customer, CustomerExtendedDto.class);
 	}
 
 	@Override
 	public CustomerRemoveDto removeCustomer(String email) {
-		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
+		Customer customer = customerRepository.findByEmail(email).orElseThrow(CustomerNotFoundException::new);
 		customerRepository.delete(customer);
 		return modelMapper.map(customer, CustomerRemoveDto.class);
 	}
 
 	@Override
 	public CustomerExtendedDto updateCustomer(String email, CustomerUpdateDto customerExtendedDto) {
-		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
-		customer.setFirstName(customerExtendedDto.getFirstName());
-		customer.setLastName(customerExtendedDto.getLastName());
-		customer.setCountry(customerExtendedDto.getCountry());
-		customer.setCity(customerExtendedDto.getCity());
-		customer.setStreet(customerExtendedDto.getStreet());
-		customer.setBuilding(customerExtendedDto.getBuilding());
-		customer.setZipcode(customerExtendedDto.getZipcode());
-		customer.setPhoneNumber(customerExtendedDto.getPhoneNumber());
+		Customer customer = customerRepository.findByEmail(email).orElseThrow(CustomerNotFoundException::new);
+		modelMapper.getConfiguration().setSkipNullEnabled(true);
+		modelMapper.map(customerExtendedDto, customer);
+		
 		if (customer.getCity() != null && customer.getStreet() != null && customer.getBuilding() != null
 				&& customer.getPhoneNumber() != null) {
 			customer.addRole("VERIFIED");
 		}
+		
 		customerRepository.save(customer);
 		return modelMapper.map(customer, CustomerExtendedDto.class);
 	}
@@ -74,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 	@Override
 	public RolesCustomerDto changeRolesListCustomer(String email, String role, boolean isAddRole) {
 
-		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
+		Customer customer = customerRepository.findByEmail(email).orElseThrow(CustomerNotFoundException::new);
 		boolean res;
 		if (isAddRole) {
 			res = customer.addRole(role.toUpperCase());
@@ -89,16 +85,16 @@ public class CustomerServiceImpl implements CustomerService, CommandLineRunner {
 	}
 
 	@Override
-	public void changePasswordCustomer(String email, String newPassword) {
-		Customer customer = customerRepository.findById(email).orElseThrow(CustomerNotFoundException::new);
-		String password = passwordEncoder.encode(newPassword);
+	public void changePasswordCustomer(CustomerChangePasswordDto customerChangePasswordDto) {
+		Customer customer = customerRepository.findByEmail(customerChangePasswordDto.getEmail()).orElseThrow(CustomerNotFoundException::new);
+		String password = passwordEncoder.encode(customerChangePasswordDto.getNewPassword());
 		customer.setPassword(password);
 		customerRepository.save(customer);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (customerRepository.findById("admin").isEmpty()) {
+		if (customerRepository.findByEmail("admin").isEmpty()) {
 			String password = passwordEncoder.encode("admin");
 			Customer customer = new Customer("admin", "admin", "admin", password, "");
 			customer.addRole("ADMINISTRATOR");

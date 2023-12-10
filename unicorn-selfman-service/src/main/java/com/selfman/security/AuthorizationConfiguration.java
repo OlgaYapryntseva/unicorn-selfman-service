@@ -35,9 +35,9 @@ public class AuthorizationConfiguration {
 				.requestMatchers(HttpMethod.DELETE, "/customer/user/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
 	
-				.requestMatchers(HttpMethod.PUT, "/provider/user/{email}")
+				.requestMatchers(HttpMethod.PUT, "/provider/{email}/")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
-				.requestMatchers(HttpMethod.DELETE, "/provider/user/{email}")
+				.requestMatchers(HttpMethod.DELETE, "/provider/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
 					
 				.anyRequest()

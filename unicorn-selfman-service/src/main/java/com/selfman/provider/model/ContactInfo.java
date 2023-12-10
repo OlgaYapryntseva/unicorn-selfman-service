@@ -1,17 +1,13 @@
 package com.selfman.provider.model;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = {"street", "building"})
 public class ContactInfo {
+//	@Id
+//	Integer contactInfoId = (int) new Random().nextInt(200000);
 	String country;
 	String city;
 	String street;
@@ -20,4 +16,5 @@ public class ContactInfo {
 	String phoneNumber;
 	String email;
 	String website;
+
 }

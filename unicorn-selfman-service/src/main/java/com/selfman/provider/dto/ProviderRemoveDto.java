@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class ProviderRemoveDto {
-	String name;
-	String email;
+   String name;
+   String email;
 }

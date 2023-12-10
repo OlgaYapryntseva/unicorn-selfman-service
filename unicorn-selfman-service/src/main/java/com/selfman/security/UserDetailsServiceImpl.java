@@ -24,14 +24,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<Customer> customerOptional = customerRepository.findById(email);
+		Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 		if (customerOptional.isPresent()) {
 			Customer customer = customerOptional.get();
 			String[] roles = customer.getRoles().stream().map(r -> "ROLE_" + r.toUpperCase()).toArray(String[]::new);
 			return new User(customer.getEmail(), customer.getPassword(), AuthorityUtils.createAuthorityList(roles));
 		}
 		
-		Optional<Provider> providerOptional = providerRepository.findById(email);
+		Optional<Provider> providerOptional = providerRepository.findByEmail(email);
 		if (providerOptional.isPresent()) {
 			Provider provider = providerOptional.get();
 			String[] roles = provider.getRoles().stream().map(r -> "ROLE_" + r.toUpperCase()).toArray(String[]::new);
