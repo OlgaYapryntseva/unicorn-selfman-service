@@ -1,6 +1,5 @@
 package com.selfman.provider.service;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,23 +15,20 @@ import com.selfman.provider.exceptions.ProviderNotFoundException;
 import com.selfman.provider.model.Provider;
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class ProviderServiceImpl implements ProviderService {
-	
+
 	final ProviderRepository providerRepository;
 	final ModelMapper modelMapper;
 	final PasswordEncoder passwordEncoder;
-	
 
 	@Override
 	public ProviderCreateDto createProvider(ProviderRegisterDto providerRegisterDto) {
-		System.out.println("createProvider   " + providerRegisterDto.getEmail());
-		if(providerRepository.findById(providerRegisterDto.getEmail()).isPresent()) {
+		if (providerRepository.findByEmail(providerRegisterDto.getEmail()).isPresent()) {
 			throw new ProviderExistsExeption();
 		}
-		Provider provider = modelMapper.map(providerRegisterDto,Provider.class);
+		Provider provider = modelMapper.map(providerRegisterDto, Provider.class);
 		String password = passwordEncoder.encode(providerRegisterDto.getPassword());
 		provider.setPassword(password);
 		providerRepository.save(provider);
@@ -42,38 +38,48 @@ public class ProviderServiceImpl implements ProviderService {
 	@Override
 
 	public ProviderUpdateDto updateProvider(String email, ProviderUpdateDto providerUpdateDto) {
-		System.out.println("updateProvider  " + email);
-		Provider provider = providerRepository.findById(email).orElseThrow(ProviderNotFoundException::new);
-		provider.setLogo(provider.getLogo());
-		provider.setName(providerUpdateDto.getName());
-		provider.setEmail(provider.getEmail());
-		provider.setIndustry(providerUpdateDto.getIndustry());
-		provider.setKeywords(providerUpdateDto.getKeywords());
-		provider.setProducts(providerUpdateDto.getProducts());
-		provider.setContactInfo(provider.getContactInfo());
-		provider.setSocialMedia(provider.getSocialMedia());
-		if(provider.getCountry() != null && provider.getName() != null && provider.getIndustry() != null
-				&& provider.getProducts() != null && provider.getContactInfo() != null
-				) {
-			provider.addRole("Authorized");
-		}
+		Provider provider = providerRepository.findByEmail(email).orElseThrow(ProviderNotFoundException::new);
+		modelMapper.getConfiguration().setSkipNullEnabled(true);
+		modelMapper.map(providerUpdateDto, provider);
+//		
+//		if(providerUpdateDto.getLogo() != null) {
+//		provider.setLogo(providerUpdateDto.getLogo());}
+//		if(providerUpdateDto.getName() != null) {
+//		provider.setName(providerUpdateDto.getName());}
+//		provider.setFounded(providerUpdateDto.getFounded());
+//		provider.setLanguages(providerUpdateDto.getLanguages());
+//		provider.setIndustry(providerUpdateDto.getIndustry());
+//		provider.setKeywords(providerUpdateDto.getKeywords());
+//		provider.setProducts(providerUpdateDto.getProducts());
+//		provider.setRating(providerUpdateDto.getRating());
+//		provider.setReviews(providerUpdateDto.getReviews());
+//		if (provider.getContactInfo() == null && providerUpdateDto.getContactInfo() != null) {
+//			provider.setContactInfo(providerUpdateDto.getContactInfo());
+//		} 
+//		if (provider.getSocialMedia() == null && providerUpdateDto.getSocialMedia() != null) {
+//			provider.setSocialMedia(providerUpdateDto.getSocialMedia());
+//		} 
+//		if (provider.getName() != null && provider.getIndustry() != null
+//				&& provider.getProducts() != null && provider.getContactInfo() != null) {
+//			provider.addRole("Authorized");
+//		}
+		
 		providerRepository.save(provider);
 		return modelMapper.map(provider, ProviderUpdateDto.class);
 	}
 
 	@Override
 	public ProviderRemoveDto removeProvider(String email) {
-		System.out.println("removeProvider  " + email);
-		Provider provider = providerRepository.findById(email).orElseThrow(ProviderNotFoundException::new);
+		Provider provider = providerRepository.findByEmail(email).orElseThrow(ProviderNotFoundException::new);
 		providerRepository.delete(provider);
 		return modelMapper.map(provider, ProviderRemoveDto.class);
 	}
 
 	@Override
-	public ProviderChangePasswordDto changePasswordProvider(String email, String newPassword) {
-		System.out.println("changePasswordProvider  " + email);
-		Provider provider = providerRepository.findById(email).orElseThrow(ProviderNotFoundException::new);
-		String password = passwordEncoder.encode(newPassword);
+	public ProviderChangePasswordDto changePasswordProvider(ProviderChangePasswordDto providerChangePasswordDto) {
+		Provider provider = providerRepository.findByEmail(providerChangePasswordDto.getEmail())
+				.orElseThrow(ProviderNotFoundException::new);
+		String password = passwordEncoder.encode(providerChangePasswordDto.getNewPassword());
 		provider.setPassword(password);
 		providerRepository.save(provider);
 		return modelMapper.map(provider, ProviderChangePasswordDto.class);
@@ -81,8 +87,7 @@ public class ProviderServiceImpl implements ProviderService {
 
 	@Override
 	public ProviderDto getProvider(String email) {
-		System.out.println("getProvider  " + email);
-		Provider provider = providerRepository.findById(email).orElseThrow(ProviderNotFoundException::new);
+		Provider provider = providerRepository.findByEmail(email).orElseThrow(ProviderNotFoundException::new);
 		return modelMapper.map(provider, ProviderDto.class);
 	}
 

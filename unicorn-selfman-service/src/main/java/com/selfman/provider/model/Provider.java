@@ -7,26 +7,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Document(collection = "provider")
 public class Provider {
-
-	String id;
 	
-	@Id
+    @Id
+    String providerId;
+    
+    @Indexed(unique = true)
 	String email;
-	
+
     String name;
 	
 	String password;
 	
-	String country;
+    String firstName;
+    
+    String lastName;
 	
 	String logo;
 	
@@ -49,23 +51,19 @@ public class Provider {
 	Set<SocialMedia> socialMedia;
 	
 	Set<String> roles;
-
+	
 	LocalDate postingDate = LocalDate.now();
 	
-	String text_password;
 	
 	public Provider() {
 		roles = new HashSet<String>();
 		roles.add("Provider");
 	}
 
-	public Provider(String email, String name, String password, String country) {
+	public Provider(String email, String password) {
 		this();
-		this.text_password = password;
 		this.email = email;
-		this.name = name;
 		this.password = password;
-		this.country = country;
 	}
 	
 	

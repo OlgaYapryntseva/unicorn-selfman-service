@@ -36,11 +36,12 @@ public class ProviderController{
 	@PostMapping("/provider/login")
 	public boolean login(Principal principal) {
 		return getProvider(principal.getName()) != null;
+		//return !principal.getName().isEmpty();
 	}
 
 	@PutMapping("/provider/{email}")
-	public ProviderUpdateDto updateProvider(Principal principal, @RequestBody ProviderUpdateDto providerUpdateDto) {
-		return providerService.updateProvider(principal.getName(), providerUpdateDto);
+	public ProviderUpdateDto updateProvider(@PathVariable String email, @RequestBody ProviderUpdateDto providerUpdateDto) {
+		return providerService.updateProvider(email, providerUpdateDto);
 	}
 
 	@DeleteMapping("/provider/{email}")
@@ -50,10 +51,8 @@ public class ProviderController{
 
 	@PutMapping("/provider/password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ProviderChangePasswordDto changePasswordProvider(Principal principal, @RequestBody ProviderChangePasswordDto providerChangePasswordDto) {
-		System.out.println(principal.getName());
-		
-		return providerService.changePasswordProvider(principal.getName(), providerChangePasswordDto.getNewPassword());
+	public ProviderChangePasswordDto changePasswordProvider(@RequestBody ProviderChangePasswordDto providerChangePasswordDto) {
+		return providerService.changePasswordProvider(providerChangePasswordDto);
 	}
 
 	@GetMapping("/provider/name/{email}")

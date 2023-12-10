@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Provider provider = providerRepository.findById(email)
+		Provider provider = providerRepository.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException(email));
 		String[] roles = provider.getRoles()
 										.stream()

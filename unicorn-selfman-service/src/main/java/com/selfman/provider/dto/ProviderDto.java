@@ -1,8 +1,6 @@
 package com.selfman.provider.dto;
 
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,15 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ProviderDto {
-	@Id
+
 	String email;
-	
+    
     String name;
 	
 	String password;
-	
-
-	String country;
 	
 	String logo;
 	
@@ -41,8 +36,8 @@ public class ProviderDto {
 	
 	Integer reviews;
 	
-	ContactInfoDto contactInfo;
+	Set<ContactInfoDto> contactInfo;
 	
-	SocialMediaDto socialMedia;
+	Set<SocialMediaDto> socialMedia;
 
 }

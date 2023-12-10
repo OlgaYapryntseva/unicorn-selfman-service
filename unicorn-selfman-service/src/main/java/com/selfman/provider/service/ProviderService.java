@@ -14,7 +14,7 @@ public interface ProviderService {
    
    ProviderRemoveDto removeProvider(String email);
    
-   ProviderChangePasswordDto changePasswordProvider(String email, String newPassword);
+   ProviderChangePasswordDto changePasswordProvider(ProviderChangePasswordDto providerChangePasswordDto);
    
    ProviderDto getProvider(String email);
    
