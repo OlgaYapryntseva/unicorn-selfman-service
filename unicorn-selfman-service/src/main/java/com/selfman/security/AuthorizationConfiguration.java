@@ -25,7 +25,7 @@ public class AuthorizationConfiguration {
         http.authorizeHttpRequests(authorize -> authorize.
 //        		dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
         		dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-				.requestMatchers("/customer/register", "/provider/register", "/business/**")
+				.requestMatchers("/customer/register", "/provider/register")
 					.permitAll()
 					
 				.requestMatchers("/customer/user/{email}/role/{role}")
@@ -40,6 +40,8 @@ public class AuthorizationConfiguration {
 				.requestMatchers(HttpMethod.DELETE, "/provider/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
 					
+				.requestMatchers("/business","/business/**").hasAnyRole("CUSTOMER", "PROVIDER")
+				.requestMatchers("/provider/{email}/items", "/provider/{email}/item/**", "/provider/items/**").authenticated()
 				.anyRequest()
 					.authenticated()
 		);
