@@ -39,8 +39,17 @@ public class AuthorizationConfiguration {
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name"))
 				.requestMatchers(HttpMethod.DELETE, "/provider/{email}")
 					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
+				
+				.requestMatchers(HttpMethod.POST, "/business")
+					.access(new WebExpressionAuthorizationManager("hasRole('CUSTOMER') and hasRole('VERIFIED') or hasRole('ADMINISTRATOR')"))
+				.requestMatchers(HttpMethod.PUT, "/business/{id}/{status}")
+					.access(new WebExpressionAuthorizationManager("hasRole('PROVIDER') and hasRole('VERIFIED') or hasRole('ADMINISTRATOR')"))
+				.requestMatchers(HttpMethod.GET, "/business/customer/{email}")
+					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))
+				.requestMatchers(HttpMethod.GET, "/business/provider/{email}")
+					.access(new WebExpressionAuthorizationManager("#email == authentication.name or hasRole('ADMINISTRATOR')"))	
 					
-				.requestMatchers("/business","/business/**").hasAnyRole("CUSTOMER", "PROVIDER")
+//				.requestMatchers("/business","/business/**").hasAnyRole("CUSTOMER", "PROVIDER")
 				.requestMatchers("/provider/{email}/items", "/provider/{email}/item/**", "/provider/items/**").authenticated()
 				.anyRequest()
 					.authenticated()
