@@ -16,5 +16,5 @@ public interface BusinessRequestsService {
      
      List<ProviderBusinessRequestsDto> getProviderBusinessRequests (String providerEmail);
      
-     BusinessRequestsDto getByIdBusinessRequests (String id);
+     BusinessRequestsDto getByIdBusinessRequests (String id, String email);
 }

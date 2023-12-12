@@ -1,5 +1,6 @@
 package com.selfman.business.requests.controller;
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,8 +43,8 @@ public class BusinessRequestsController{
 	}
 
 	@GetMapping("/business/{id}")
-	public BusinessRequestsDto getByIdBusinessRequests(@PathVariable String id) {
-		return businessRequestsService.getByIdBusinessRequests(id);
+	public BusinessRequestsDto getByIdBusinessRequests(@PathVariable String id, Principal principal) {
+		return businessRequestsService.getByIdBusinessRequests(id, principal.getName());
 	}
 
 }

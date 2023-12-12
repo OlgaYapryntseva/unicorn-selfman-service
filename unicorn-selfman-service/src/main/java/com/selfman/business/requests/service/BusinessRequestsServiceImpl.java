@@ -11,6 +11,7 @@ import com.selfman.business.requests.dto.BusinessRequestsCreateDto;
 import com.selfman.business.requests.dto.BusinessRequestsDto;
 import com.selfman.business.requests.dto.CustomerBusinessRequestsDto;
 import com.selfman.business.requests.dto.ProviderBusinessRequestsDto;
+import com.selfman.business.requests.exceptions.BusinessRequestsForbiddenException;
 import com.selfman.business.requests.exceptions.BusinessRequestsNotFoundException;
 import com.selfman.business.requests.model.BusinessRequests;
 import com.selfman.provider.dao.ProviderRepository;
@@ -59,10 +60,13 @@ public class BusinessRequestsServiceImpl implements BusinessRequestsService {
 	}
 
 	@Override
-	public BusinessRequestsDto getByIdBusinessRequests(String id) {
+	public BusinessRequestsDto getByIdBusinessRequests(String id, String email) {
 		BusinessRequests businessRequests = businessRequestsRepository.findById(id)
 				.orElseThrow(BusinessRequestsNotFoundException::new);
-		return modelMapper.map(businessRequests, BusinessRequestsDto.class);
+		if (businessRequests.getProviderEmail().equals(email) || businessRequests.getCustomerEmail().equals(email)) {
+			return modelMapper.map(businessRequests, BusinessRequestsDto.class);
+		}
+		throw new BusinessRequestsForbiddenException();
 	}
 
 }
